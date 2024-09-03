@@ -1,0 +1,50 @@
+version: '3.8'
+services:
+  product-service-database:
+    image: mysql:8.1
+    platform: linux/x86_64
+    command: --default-authentication-plugin=mysql_native_password
+    volumes:
+      - product-service-database-volume:/var/lib/mysql
+      # - "./docker/mysql:/var/log/mysql" # uncomment this and run docker exec ... "./var/log/mysql/mysql_log_init.sh" to get the logging up and running
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-product-service}
+      MYSQL_USER: ${MYSQL_USER:-user}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-root}
+    ports:
+      - 3307:3306
+    networks:
+      - shared_network
+
+  product-service-symfony:
+    build: .
+    ports:
+      - 8002:80
+    volumes:
+      - ./:/var/www/
+      - /var/www/vendor
+      - /var/www/var
+    depends_on:
+      - product-service-database
+    networks:
+      - shared_network
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    links:
+      - product-service-database
+    ports:
+      - 8081:80
+    environment:
+      PMA_HOST: product-service-database
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root}
+    networks:
+      - shared_network
+
+volumes:
+  product-service-database-volume:
+
+networks:
+    shared_network:
+      external: true

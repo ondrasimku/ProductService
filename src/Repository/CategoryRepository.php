@@ -40,4 +40,31 @@ class CategoryRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
+    public function findRoot()
+    {
+        return $this->createQueryBuilder('c')
+            ->andWhere("c.parent IS NULL")
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findRootActive()
+    {
+        return $this->createQueryBuilder('c')
+            ->andWhere("c.parent IS NULL")
+            ->andWhere("c.isActive = :isActive")
+            ->setParameter("isActive", true)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findRootInActive()
+    {
+        return $this->createQueryBuilder('c')
+            ->andWhere("c.parent IS NULL")
+            ->andWhere("c.isActive = :isActive")
+            ->setParameter("isActive", false)
+            ->getQuery()
+            ->getResult();
+    }
 }

@@ -4,6 +4,7 @@ namespace App\Dto;
 
 use App\Exception\ApiException;
 use App\Validator\DtoValidator;
+use Exception;
 use ReflectionException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ValueResolverInterface;
@@ -36,7 +37,7 @@ class InputValueResolver implements ValueResolverInterface
 
         try {
             $dto = $this->serializer->deserialize($request->getContent(), $argument->getType(), 'json');
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             throw new ApiException(
                 ["Cannot serialize, check request body for any errors\n" . $exception->getMessage()],
                 400

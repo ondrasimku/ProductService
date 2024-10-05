@@ -4,6 +4,7 @@ namespace App\Service\ProductService;
 
 use App\Dto\ProductDto\AddProductToCategoryInputDto;
 use App\Dto\ProductDto\CreateProductDto;
+use App\Dto\ProductDto\RemoveProductFromCategoryInputDto;
 use App\Entity\Product;
 use App\Exception\ApiException;
 use App\Repository\ProductRepository;
@@ -92,5 +93,10 @@ readonly class ProductService
         }
         $this->entityManager->flush();
         return $product;
+    }
+
+    public function removeFromCategory(int $id, RemoveProductFromCategoryInputDto $removeProductFromCategoryInputDto): Product
+    {
+
     }
 }

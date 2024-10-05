@@ -4,6 +4,7 @@ namespace App\Controller\ProductController;
 
 use App\Dto\ProductDto\AddProductToCategoryInputDto;
 use App\Dto\ProductDto\CreateProductDto;
+use App\Dto\ProductDto\RemoveProductFromCategoryInputDto;
 use App\Response\ApiResponse;
 use App\Service\ProductService\ProductService;
 use Symfony\Component\HttpFoundation\Response;
@@ -33,6 +34,14 @@ readonly class ProductController
     public function addToCategory(AddProductToCategoryInputDto $addProductToCategoryInputDto, int $id): Response
     {
         $product = $this->productService->addToCategory($id, $addProductToCategoryInputDto);
+        $responseData = $this->serializer->serialize($product, 'json', ["groups" => ["product"]]);
+        return new ApiResponse($responseData, Response::HTTP_CREATED);
+    }
+
+    #[Route("/products/{id}:deleteCategory", name: "product_delete_category", requirements: ["id" => "\d+"], methods: ["POST"])]
+    public function deleteCategory(RemoveProductFromCategoryInputDto $removeProductFromCategoryInputDto, int $id): Response
+    {
+        $product = $this->productService->removeFromCategory($id, $removeProductFromCategoryInputDto);
         $responseData = $this->serializer->serialize($product, 'json', ["groups" => ["product"]]);
         return new ApiResponse($responseData, Response::HTTP_CREATED);
     }

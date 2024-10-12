@@ -94,7 +94,7 @@ readonly class CategoryService
 
     public function getRootInActiveCategories(): array
     {
-        return $this->categoryRepository->findRootInActive();
+        return $this->categoryRepository->findRootInactive();
     }
 
     public function patchById(int $id, UpdateCategoryDto $updateCategoryInputDto): Category

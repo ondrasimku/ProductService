@@ -58,7 +58,7 @@ class CategoryRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function findRootInActive()
+    public function findRootInactive()
     {
         return $this->createQueryBuilder('c')
             ->andWhere("c.parent IS NULL")

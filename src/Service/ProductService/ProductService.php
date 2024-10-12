@@ -22,7 +22,7 @@ readonly class ProductService
     }
     public function createProduct(CreateProductDto $createProductDto): Product
     {
-        // This throws exception automatically if some of the ids don't exist
+        // This throws exception automatically if some ids don't exist
         $categories = $this->categoryService->getCategoriesById($createProductDto->categoryIds);
         $product = new Product();
         $product->setProductDescription($createProductDto->productDescription)
